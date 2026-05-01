@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andus Strategy: Open Questions & Recommendations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #FAF9F7;
+            --bg-card: #FFFFFF;
+            --accent: #B8623B;
+            --accent-dark: #9A5232;
+            --text-primary: #1A1917;
+            --text-secondary: #5C5850;
+            --text-muted: #9C978D;
+            --border-light: rgba(156, 151, 141, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.7s ease-out forwards;
+            opacity: 0;
+        }
+
+        .animate-left {
+            animation: fadeInLeft 0.7s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+        .delay-8 { animation-delay: 0.8s; }
+        .delay-9 { animation-delay: 0.9s; }
+        .delay-10 { animation-delay: 1.0s; }
+        .delay-11 { animation-delay: 1.1s; }
+        .delay-12 { animation-delay: 1.2s; }
+        .delay-13 { animation-delay: 1.3s; }
+        .delay-14 { animation-delay: 1.4s; }
+        .delay-15 { animation-delay: 1.5s; }
+
+        /* Editorial Header */
+        .editorial-header {
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-page) 100%);
+            padding: 80px 24px 60px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .editorial-header .overline {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .editorial-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 3.75rem);
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .editorial-header .context {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .editorial-header .meta {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 80px 0 48px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--text-primary);
+        }
+
+        .section-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: rgba(184, 98, 59, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .section-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .section-intro {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin-bottom: 48px;
+        }
+
+        /* Question Cards */
+        .questions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 0;
+            box-shadow: 0 2px 20px rgba(26, 25, 23, 0.04), 0 1px 4px rgba(26, 25, 23, 0.02);
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 8px 40px rgba(26, 25, 23, 0.08), 0 2px 8px rgba(26, 25, 23, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .question-number-container {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 36px;
+        }
+
+        .question-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.75rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            line-height: 1;
+        }
+
+        .question-content {
+            padding: 36px 40px;
+        }
+
+        .question-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.35;
+        }
+
+        .why-matters {
+            background: var(--bg-page);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .why-matters-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .why-matters p {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin: 0;
+        }
+
+        .directions-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .directions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .direction {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 18px;
+            background: var(--bg-page);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .direction:hover {
+            border-color: var(--accent);
+            background: rgba(184, 98, 59, 0.03);
+        }
+
+        .direction-arrow {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .direction-text strong {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .direction-text span {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Recommendations Section */
+        .recommendations-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .rec-card {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 36px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 2px 20px rgba(26, 25, 23, 0.04), 0 1px 4px rgba(26, 25, 23, 0.02);
+            position: relative;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .rec-card:hover {
+            box-shadow: 0 8px 40px rgba(26, 25, 23, 0.08), 0 2px 8px rgba(26, 25, 23, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .rec-card.featured {
+            background: linear-gradient(135deg, rgba(184, 98, 59, 0.03) 0%, var(--bg-card) 100%);
+            border-left-width: 6px;
+        }
+
+        .rec-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .rec-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(184, 98, 59, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rec-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.35;
+        }
+
+        .rec-section {
+            margin-bottom: 20px;
+        }
+
+        .rec-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .rec-section p {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .next-step {
+            background: linear-gradient(135deg, rgba(184, 98, 59, 0.08) 0%, rgba(184, 98, 59, 0.04) 100%);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-top: 24px;
+            border: 1px solid rgba(184, 98, 59, 0.15);
+        }
+
+        .next-step .rec-label {
+            color: var(--accent);
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .next-step .rec-label::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .next-step p {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin: 100px 0 60px;
+            padding: 48px 24px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        footer p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+            .editorial-header {
+                padding: 60px 20px 40px;
+            }
+
+            .editorial-header h1 {
+                font-size: 2rem;
+            }
+
+            .question-card {
+                grid-template-columns: 1fr;
+            }
+
+            .question-number-container {
+                padding: 24px;
+                justify-content: flex-start;
+            }
+
+            .question-number {
+                font-size: 2rem;
+            }
+
+            .question-content {
+                padding: 24px;
+            }
+
+            .question-card h3 {
+                font-size: 1.25rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                margin: 60px 0 36px;
+            }
+
+            .section-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .rec-card {
+                padding: 28px;
+            }
+
+            .rec-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        @media print {
+            .question-card,
+            .rec-card {
+                break-inside: avoid;
+            }
+
+            .animate,
+            .animate-left {
+                animation: none;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Editorial Header -->
+    <header class="editorial-header">
+        <p class="overline animate delay-1">Executive Briefing</p>
+        <h1 class="animate delay-2">Open Questions &<br>Strategic Recommendations</h1>
+        <p class="context animate delay-3">Critical decision points that will shape Andus's go-to-market strategy and product roadmap</p>
+        <p class="meta animate delay-4">Following the strategy call with Mike &mdash; April 2026</p>
+    </header>
+
+    <div class="container">
+        <!-- Questions Section -->
+        <section>
+            <div class="section-header animate delay-5">
+                <span class="section-number">Part I</span>
+                <h2>Open Questions</h2>
+            </div>
+            <p class="section-intro animate delay-6">These represent forks in the road worth discussing explicitly. Each question invites contemplation about a critical aspect of Andus's future direction.</p>
+
+            <div class="questions-grid">
+                <div class="question-card animate delay-7">
+                    <div class="question-number-container">
+                        <span class="question-number">01</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>What is the North Star metric for client success?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>Without a single anchor metric, every product conversation becomes diffuse. The pitch lacks a through-line, and clients can't easily articulate the ROI of working with Andus.</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Time-to-first-AI-win:</strong> <span>Measure how quickly a client deploys their first production AI use case</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>AI adoption velocity:</strong> <span>Track percentage of workforce actively using AI tools month-over-month</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Decision quality improvement:</strong> <span>Proxy through executive confidence scores or initiative completion rates</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-8">
+                    <div class="question-number-container">
+                        <span class="question-number">02</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>What does ongoing client engagement look like after onboarding?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>There's strong clarity on the front-end but less definition of what clients DO with Andus on day 91 and beyond. This affects retention, LTV, and whether Andus is a "project" or a "partnership."</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Subscription to Quorum:</strong> <span>Ongoing strategic thinking tool with regular facilitated sessions</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Managed AI operations:</strong> <span>Andus runs "Agents as Staff" on behalf of clients</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Quarterly diagnostic cycles:</strong> <span>Regular re-assessment with new recommendations</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-9">
+                    <div class="question-number-container">
+                        <span class="question-number">03</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>Should the Simulator be entertainment, assessment, or both?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>The Sim is compelling as a hook, but its strategic value depends on what it produces. A game that's fun but doesn't generate insights is a marketing tool. A game that surfaces executive blind spots is a diagnostic instrument.</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Entertainment-first:</strong> <span>Use it purely for engagement; diagnostics happen elsewhere</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Assessment-embedded:</strong> <span>Redesign scenarios to surface competency gaps while maintaining engagement</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Tiered approach:</strong> <span>Light version for events, deep version for paying clients with reports</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-10">
+                    <div class="question-number-container">
+                        <span class="question-number">04</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>What's the repeatable motion beyond ServiceNow?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>A lot of current energy is going into the ServiceNow event. But one marquee client doesn't make a business. The question is what's being learned that applies to the next 10 clients.</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Industry vertical play:</strong> <span>Replicate the approach for other enterprise software companies</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Executive cohort model:</strong> <span>Run multi-company programs</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Productize the engagement:</strong> <span>Turn what's being built into a packaged offering</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-11">
+                    <div class="question-number-container">
+                        <span class="question-number">05</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>How does the product ecosystem fit together for a client?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>There are many compelling pieces but the client journey through them isn't obvious. Is there a sequence? Do clients pick and choose?</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Linear journey:</strong> <span>Diagnostic &rarr; Simulator &rarr; Quorum &rarr; Product Factory</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Hub and spoke:</strong> <span>Diagnostic is the center; all other tools address gaps it identifies</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Menu model:</strong> <span>Clients choose based on maturity level and budget</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-12">
+                    <div class="question-number-container">
+                        <span class="question-number">06</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>What's the legal/ethical risk with Quorum's persona approach?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>Using 60+ AI personas based on scraped public figure data creates real exposure. Even if technically legal, a public figure objecting could create reputational damage.</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Shift to archetypes:</strong> <span>"The Contrarian Strategist" instead of named individuals</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Permission-based expansion:</strong> <span>Only add new personas with explicit consent</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Transparency defense:</strong> <span>Be upfront that personas are AI interpretations</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-13">
+                    <div class="question-number-container">
+                        <span class="question-number">07</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>How should "Agents as Staff" factor into client business cases?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>Mike's insight that AI agents should be budgeted alongside human headcount is powerful but needs structure.</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Agent cost calculator:</strong> <span>Tool to model agent deployment vs. hiring decisions</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Org chart integration:</strong> <span>Show what a "blended workforce" looks like</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Case study approach:</strong> <span>"This agent does 0.5 FTE at 10% of the cost"</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-14">
+                    <div class="question-number-container">
+                        <span class="question-number">08</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>What's the wedge product?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>Even with a full ecosystem, most clients will enter through one door. Which product is the easiest yes?</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Simulator as wedge:</strong> <span>Low commitment, high engagement</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Diagnostic as wedge:</strong> <span>Positions Andus as assessors first</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>Product Factory as wedge:</strong> <span>"Let us show you what's possible in 2 weeks"</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-15">
+                    <div class="question-number-container">
+                        <span class="question-number">09</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>Who is the actual buyer?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>"AI transformation" could be sold to CEOs, CTOs, CHROs, or strategy leads. Each has different budgets and decision timelines.</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>CEO/Board level:</strong> <span>Strategic imperative; longer sales cycle but bigger deals</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>CHRO/People Ops:</strong> <span>Frame as workforce transformation; tie to L&D budgets</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>CTO/Innovation:</strong> <span>Technical credibility matters most</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-card animate delay-1">
+                    <div class="question-number-container">
+                        <span class="question-number">10</span>
+                    </div>
+                    <div class="question-content">
+                        <h3>What does Andus NOT do?</h3>
+                        <div class="why-matters">
+                            <div class="why-matters-label">Why It Matters</div>
+                            <p>The scope is ambitious. Defining boundaries helps focus resources and prevents overcommitment.</p>
+                        </div>
+                        <div class="directions-label">Possible Directions</div>
+                        <div class="directions-list">
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>No implementation:</strong> <span>Andus diagnoses and designs; partners or clients build</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>No ongoing IT support:</strong> <span>Andus transforms; clients operate</span></div>
+                            </div>
+                            <div class="direction">
+                                <span class="direction-arrow">&rarr;</span>
+                                <div class="direction-text"><strong>No generic training:</strong> <span>Executives only; mass employee training is out of scope</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section>
+            <div class="section-header animate delay-2">
+                <span class="section-number">Part II</span>
+                <h2>Strategic Recommendations</h2>
+            </div>
+            <p class="section-intro animate delay-3">Based on the gaps and opportunities surfaced in our conversation, here are concrete next steps worth considering. Each recommendation is designed to be actionable within the next 30 days.</p>
+
+            <div class="recommendations-grid">
+                <div class="rec-card featured animate delay-4">
+                    <div class="rec-header">
+                        <span class="rec-number">1</span>
+                        <h3>Define the "Day 91 Problem" Before Scaling</h3>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">The Recommendation</div>
+                        <p>Before the ServiceNow event, document a clear answer to: "What does a client do with Andus 90 days after their initial engagement ends?"</p>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">Rationale</div>
+                        <p>The current product suite is heavily weighted toward onboarding. Without a compelling ongoing value story, Andus risks becoming a one-time engagement rather than a long-term partnership.</p>
+                    </div>
+                    <div class="next-step">
+                        <div class="rec-label">Next Step</div>
+                        <p>Map out 3 specific ongoing engagement models with pricing, then validate with 2-3 friendly clients or advisors before the event.</p>
+                    </div>
+                </div>
+
+                <div class="rec-card animate delay-5">
+                    <div class="rec-header">
+                        <span class="rec-number">2</span>
+                        <h3>Make the Simulator Diagnostic</h3>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">The Recommendation</div>
+                        <p>Redesign the Simulator to generate a "readiness profile" for each participant, even if the primary experience remains game-like.</p>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">Rationale</div>
+                        <p>This turns a marketing asset into a data-generating machine. Every executive who plays becomes a qualified lead with specific gaps Andus can address.</p>
+                    </div>
+                    <div class="next-step">
+                        <div class="rec-label">Next Step</div>
+                        <p>Identify 5-7 specific competencies the Sim could assess, then work backward into scenario design that surfaces them.</p>
+                    </div>
+                </div>
+
+                <div class="rec-card animate delay-6">
+                    <div class="rec-header">
+                        <span class="rec-number">3</span>
+                        <h3>Build the "Agents as Staff" Business Case Tool</h3>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">The Recommendation</div>
+                        <p>Create a simple calculator or framework that helps executives model AI agent costs alongside traditional headcount.</p>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">Rationale</div>
+                        <p>This is a differentiated insight that makes Andus's thinking tangible. It creates a natural conversation about which agents Andus could deploy.</p>
+                    </div>
+                    <div class="next-step">
+                        <div class="rec-label">Next Step</div>
+                        <p>Prototype a spreadsheet with 3-4 example agent roles, cost assumptions, and comparison to equivalent human roles. Test it in the next client conversation.</p>
+                    </div>
+                </div>
+
+                <div class="rec-card animate delay-7">
+                    <div class="rec-header">
+                        <span class="rec-number">4</span>
+                        <h3>Migrate Quorum to Archetype-Based Personas</h3>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">The Recommendation</div>
+                        <p>Gradually shift from named public figures to archetype-based personas that capture the same strategic value without legal exposure.</p>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">Rationale</div>
+                        <p>The current approach works but carries unnecessary risk. Archetypes can be just as effective ("The First-Principles Thinker" vs. "Elon Musk") and are fully defensible.</p>
+                    </div>
+                    <div class="next-step">
+                        <div class="rec-label">Next Step</div>
+                        <p>Pick the 10 most-used personas, create archetype equivalents, and A/B test with a small group to validate that value isn't lost.</p>
+                    </div>
+                </div>
+
+                <div class="rec-card featured animate delay-8">
+                    <div class="rec-header">
+                        <span class="rec-number">5</span>
+                        <h3>Use ServiceNow to Prototype the Repeatable Motion</h3>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">The Recommendation</div>
+                        <p>Treat the ServiceNow engagement explicitly as a pilot for a repeatable enterprise offering. Document what works, what doesn't, and what would need to change.</p>
+                    </div>
+                    <div class="rec-section">
+                        <div class="rec-label">Rationale</div>
+                        <p>The risk is building something bespoke that can't scale. By being intentional about learning, the ServiceNow effort becomes R&D for the broader business.</p>
+                    </div>
+                    <div class="next-step">
+                        <div class="rec-label">Next Step</div>
+                        <p>Create a "ServiceNow Learnings" doc with sections for: what we'd do again, what we'd change, and what we now know about enterprise AI transformation buyers. Update weekly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="animate delay-9">
+            <p>These questions and recommendations are meant as thought starters, not prescriptions. Happy to dig deeper on any of them.</p>
+        </footer>
+    </div>
+</body>
+</html>

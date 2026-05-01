@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whiteboard Listener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #FAF9F7;
+            --bg-card: #FFFFFF;
+            --accent: #B8623B;
+            --accent-dark: #9A5232;
+            --text-primary: #1A1917;
+            --text-secondary: #5C5850;
+            --text-muted: #9C978D;
+            --success: #2D7A5F;
+            --border: rgba(156, 151, 141, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-page);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        /* Minimal Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-mark {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(184, 98, 59, 0.25);
+        }
+
+        .logo-mark svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+        }
+
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-primary);
+            background: rgba(26, 25, 23, 0.04);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(184, 98, 59, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(184, 98, 59, 0.4);
+        }
+
+        .btn-primary svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-page);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-reveal {
+            background: var(--success);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(45, 122, 95, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-reveal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(45, 122, 95, 0.4);
+        }
+
+        .btn-reveal svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Canvas Area - The main stage */
+        .canvas {
+            position: fixed;
+            inset: 0;
+            padding-top: 72px;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(184, 98, 59, 0.03) 0%, transparent 60%),
+                var(--bg-page);
+        }
+
+        /* Subtle dot grid pattern */
+        .canvas::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, var(--text-muted) 1px, transparent 1px);
+            background-size: 32px 32px;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* ========== IDLE STATE ========== */
+        .state-idle {
+            position: absolute;
+            inset: 72px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .state-idle.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .idle-visual {
+            position: relative;
+            margin-bottom: 48px;
+        }
+
+        .idle-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(184, 98, 59, 0.08) 0%, rgba(184, 98, 59, 0.02) 100%);
+            border: 2px dashed rgba(184, 98, 59, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: breathe 4s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .idle-circle:hover {
+            background: linear-gradient(135deg, rgba(184, 98, 59, 0.15) 0%, rgba(184, 98, 59, 0.05) 100%);
+            border-color: rgba(184, 98, 59, 0.4);
+            transform: scale(1.05);
+        }
+
+        .idle-circle:hover svg {
+            stroke: var(--accent-dark);
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .idle-circle svg {
+            width: 64px;
+            height: 64px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .idle-rings {
+            position: absolute;
+            inset: -40px;
+            border-radius: 50%;
+            border: 1px solid rgba(184, 98, 59, 0.08);
+            animation: ripple 3s ease-out infinite;
+        }
+
+        .idle-rings:nth-child(2) { animation-delay: 1s; }
+        .idle-rings:nth-child(3) { animation-delay: 2s; }
+
+        @keyframes ripple {
+            0% { transform: scale(0.9); opacity: 0.4; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .idle-text {
+            text-align: center;
+        }
+
+        .idle-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .idle-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Demo mind map nodes on idle canvas */
+        .demo-nodes {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        .demo-node {
+            position: absolute;
+            background: var(--bg-card);
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .demo-node:nth-child(1) { top: 18%; left: 12%; animation-delay: 0s; }
+        .demo-node:nth-child(2) { top: 25%; right: 15%; animation-delay: 1s; }
+        .demo-node:nth-child(3) { bottom: 30%; left: 8%; animation-delay: 2s; }
+        .demo-node:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 0.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ========== LISTENING STATE ========== */
+        .state-listening {
+            position: absolute;
+            inset: 72px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .state-listening.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Floating listening indicator */
+        .listening-orb {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+        }
+
+        .orb-core {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 40px rgba(184, 98, 59, 0.35);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .orb-core:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 50px rgba(184, 98, 59, 0.45);
+        }
+
+        .orb-pulse {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: orbPulse 2s ease-out infinite;
+        }
+
+        @keyframes orbPulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        .orb-icon {
+            position: relative;
+            z-index: 1;
+        }
+
+        .orb-icon svg {
+            width: 36px;
+            height: 36px;
+            stroke: #ffffff;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .orb-timer {
+            position: relative;
+            z-index: 1;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 6px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .orb-label {
+            position: absolute;
+            bottom: -36px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        /* Waveform visualization below the orb */
+        .waveform-container {
+            position: fixed;
+            top: calc(50% + 100px);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 60px;
+            z-index: 50;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+            height: 8px;
+            animation: waveform var(--duration, 0.8s) ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+            opacity: 0.8;
+        }
+
+        @keyframes waveform {
+            0%, 100% {
+                height: 8px;
+                opacity: 0.4;
+            }
+            50% {
+                height: var(--max-height, 40px);
+                opacity: 1;
+            }
+        }
+
+        /* Transcript Panel - Collapsible side panel */
+        .transcript-panel {
+            position: fixed;
+            top: 100px;
+            right: 32px;
+            width: 380px;
+            max-height: calc(100vh - 140px);
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            z-index: 60;
+        }
+
+        .transcript-panel.collapsed {
+            transform: translateX(calc(100% + 50px));
+            opacity: 0;
+        }
+
+        .transcript-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .transcript-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .transcript-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: var(--bg-page);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .transcript-toggle:hover {
+            background: rgba(184, 98, 59, 0.1);
+        }
+
+        .transcript-toggle svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-secondary);
+            fill: none;
+        }
+
+        .transcript-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 24px;
+        }
+
+        .transcript-line {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            opacity: 0;
+            transform: translateX(20px);
+            animation: slideIn 0.4s forwards;
+        }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .transcript-speaker {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .transcript-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        /* Collapsed transcript button */
+        .transcript-expand-btn {
+            position: fixed;
+            right: 32px;
+            top: 100px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 60;
+        }
+
+        .transcript-expand-btn.visible {
+            display: flex;
+        }
+
+        .transcript-expand-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .transcript-expand-btn:hover svg {
+            stroke: #ffffff;
+        }
+
+        .transcript-expand-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-secondary);
+            fill: none;
+        }
+
+        /* ========== PROCESSING STATE ========== */
+        .state-processing {
+            position: absolute;
+            inset: 72px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .state-processing.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .processing-visual {
+            margin-bottom: 40px;
+        }
+
+        .processing-spinner {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .processing-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .processing-subtext {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        /* ========== REVEAL STATE - Mind Map ========== */
+        .state-reveal {
+            position: absolute;
+            inset: 72px 0 0 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            overflow: hidden;
+        }
+
+        .state-reveal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mindmap-container {
+            position: absolute;
+            inset: 0;
+        }
+
+        .mindmap-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .node {
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .node:hover {
+            transform: scale(1.06);
+        }
+
+        .node-rect {
+            rx: 16;
+            ry: 16;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
+        }
+
+        .node-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            fill: #ffffff;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .connection {
+            stroke: rgba(184, 98, 59, 0.2);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Legend - bottom left */
+        .legend {
+            position: absolute;
+            bottom: 32px;
+            left: 40px;
+            display: flex;
+            gap: 28px;
+            background: var(--bg-card);
+            padding: 20px 32px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 6px;
+        }
+
+        .legend-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Summary Panel - floating on right */
+        .summary-panel {
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            width: 360px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: floatUp 0.6s 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        @keyframes floatUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, rgba(184, 98, 59, 0.06) 0%, rgba(184, 98, 59, 0.02) 100%);
+            padding: 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(184, 98, 59, 0.1);
+        }
+
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .summary-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+        }
+
+        .summary-list {
+            list-style: none;
+        }
+
+        .summary-list-item {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .summary-list-item::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Minimal Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-mark">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3.5 18.5l6-6 4 4L22 8"/>
+                    <path d="M14 8h8v8" fill="none" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </div>
+            <span class="logo-text">Whiteboard Listener</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-ghost" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="startBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                </svg>
+                Start Listening
+            </button>
+            <button class="btn btn-reveal hidden" id="revealBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/>
+                </svg>
+                Visualize
+            </button>
+        </div>
+    </header>
+
+    <!-- Canvas Area -->
+    <div class="canvas">
+        <!-- Idle State -->
+        <div class="state-idle" id="stateIdle">
+            <!-- Demo floating nodes -->
+            <div class="demo-nodes">
+                <div class="demo-node">Product Strategy</div>
+                <div class="demo-node">Team Sync</div>
+                <div class="demo-node">User Research</div>
+                <div class="demo-node">Launch Plan</div>
+            </div>
+
+            <div class="idle-visual">
+                <div class="idle-rings"></div>
+                <div class="idle-rings"></div>
+                <div class="idle-rings"></div>
+                <div class="idle-circle">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="idle-text">
+                <h1 class="idle-title">Ready to capture your ideas</h1>
+                <p class="idle-subtitle">Speak freely and watch your thoughts become a visual map</p>
+            </div>
+        </div>
+
+        <!-- Listening State -->
+        <div class="state-listening" id="stateListening">
+            <!-- Central listening orb -->
+            <div class="listening-orb">
+                <div class="orb-pulse"></div>
+                <div class="orb-core">
+                    <div class="orb-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                        </svg>
+                    </div>
+                    <span class="orb-timer" id="timer">00:00</span>
+                </div>
+                <span class="orb-label">Listening</span>
+            </div>
+
+            <!-- Waveform below orb -->
+            <div class="waveform-container" id="waveform"></div>
+
+            <!-- Transcript Panel -->
+            <div class="transcript-panel" id="transcriptPanel">
+                <div class="transcript-header">
+                    <span class="transcript-title">Live Transcript</span>
+                    <button class="transcript-toggle" id="transcriptToggle">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <path d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="transcript-body" id="transcript"></div>
+            </div>
+
+            <!-- Expand transcript button (when collapsed) -->
+            <button class="transcript-expand-btn" id="transcriptExpand">
+                <svg viewBox="0 0 24 24" stroke-width="2">
+                    <path d="M8 12h8M8 8h8M8 16h4"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Processing State -->
+        <div class="state-processing" id="stateProcessing">
+            <div class="processing-visual">
+                <div class="processing-spinner"></div>
+            </div>
+            <p class="processing-text">Creating your mind map...</p>
+            <p class="processing-subtext">Analyzing conversation patterns</p>
+        </div>
+
+        <!-- Reveal State - Mind Map -->
+        <div class="state-reveal" id="stateReveal">
+            <div class="mindmap-container">
+                <svg class="mindmap-svg" id="mindmapSvg"></svg>
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--accent);"></div>
+                    <span class="legend-text">Topics</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--accent-dark);"></div>
+                    <span class="legend-text">Decisions</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #D4956A;"></div>
+                    <span class="legend-text">Questions</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--success);"></div>
+                    <span class="legend-text">Action Items</span>
+                </div>
+            </div>
+            <div class="summary-panel">
+                <h3 class="summary-title">Conversation Summary</h3>
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Topics</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Decisions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Actions</div>
+                    </div>
+                </div>
+                <div class="summary-section-title">Key Action Items</div>
+                <ul class="summary-list">
+                    <li class="summary-list-item">Share screenshots with Shane</li>
+                    <li class="summary-list-item">Set up team sync</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let currentState = 'idle';
+        let timerInterval = null;
+        let seconds = 0;
+        let transcriptIndex = 0;
+        let transcriptCollapsed = false;
+
+        // Mock transcript data
+        const mockTranscript = [
+            { speaker: "Alex", text: "So let's talk about the AI transformation initiative. I think we need to focus on how we're going to roll this out." },
+            { speaker: "Jordan", text: "Right, and the Human OS concept is central to this. It's about augmenting human capabilities, not replacing them." },
+            { speaker: "Alex", text: "Exactly. I had a great conversation about the ServiceNow event coming up. We need to prepare our messaging." },
+            { speaker: "Jordan", text: "What about the Nike meeting? Did we finalize the approach for that?" },
+            { speaker: "Alex", text: "Yes, I think we should focus on the executive tier first. That's where we'll get the most traction." },
+            { speaker: "Jordan", text: "Good call. But what's our wedge product? We need something concrete to lead with." },
+            { speaker: "Alex", text: "That's the question. We also need to define our North Star metric for measuring success." },
+            { speaker: "Jordan", text: "How do we measure ongoing value though? That's going to be key for retention." },
+            { speaker: "Alex", text: "Let's action a few things. Can you share those screenshots with Shane? He needs context." },
+            { speaker: "Jordan", text: "Will do. And let's set up a team sync for next week to align everyone." }
+        ];
+
+        // Mind map data - using warm color palette
+        const mindmapData = {
+            center: { x: 500, y: 350, label: "AI Transformation Discussion", type: "center" },
+            nodes: [
+                // Topics
+                { id: 1, x: 200, y: 180, label: "AI Transformation", type: "topic", connections: ["center"] },
+                { id: 2, x: 350, y: 120, label: "Human OS", type: "topic", connections: ["center", 1] },
+                { id: 3, x: 700, y: 150, label: "ServiceNow Event", type: "topic", connections: ["center"] },
+                { id: 4, x: 800, y: 280, label: "Nike Meeting", type: "topic", connections: ["center"] },
+
+                // Decisions
+                { id: 5, x: 250, y: 450, label: "Focus on executive tier first", type: "decision", connections: [4] },
+                { id: 6, x: 450, y: 520, label: "Need North Star metric", type: "decision", connections: ["center"] },
+
+                // Questions
+                { id: 7, x: 650, y: 480, label: "What's the wedge product?", type: "question", connections: ["center"] },
+                { id: 8, x: 780, y: 420, label: "How to measure ongoing value?", type: "question", connections: [6] },
+
+                // Action Items
+                { id: 9, x: 150, y: 320, label: "Share screenshots with Shane", type: "action", connections: ["center"] },
+                { id: 10, x: 180, y: 420, label: "Set up team sync", type: "action", connections: ["center"] }
+            ]
+        };
+
+        // Warm palette for mind map nodes
+        const typeColors = {
+            center: "#B8623B",
+            topic: "#B8623B",
+            decision: "#9A5232",
+            question: "#D4956A",
+            action: "#2D7A5F"
+        };
+
+        // DOM Elements
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const revealBtn = document.getElementById('revealBtn');
+        const stateIdle = document.getElementById('stateIdle');
+        const stateListening = document.getElementById('stateListening');
+        const stateProcessing = document.getElementById('stateProcessing');
+        const stateReveal = document.getElementById('stateReveal');
+        const timerEl = document.getElementById('timer');
+        const waveformEl = document.getElementById('waveform');
+        const transcriptEl = document.getElementById('transcript');
+        const mindmapSvg = document.getElementById('mindmapSvg');
+        const transcriptPanel = document.getElementById('transcriptPanel');
+        const transcriptToggle = document.getElementById('transcriptToggle');
+        const transcriptExpand = document.getElementById('transcriptExpand');
+
+        // Initialize waveform bars in traditional audio wave pattern
+        function initWaveform() {
+            waveformEl.innerHTML = '';
+            const barCount = 32;
+            const center = barCount / 2;
+
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar';
+
+                // Create a natural wave pattern - taller in middle, shorter at edges
+                const distFromCenter = Math.abs(i - center) / center;
+                const baseHeight = 45 - (distFromCenter * 30);
+                const variance = 10 + Math.random() * 15;
+                const maxHeight = baseHeight + variance;
+
+                // Stagger animation timing for wave effect
+                const delay = (i * 0.05) % 0.4;
+                const duration = 0.6 + Math.random() * 0.4;
+
+                bar.style.setProperty('--max-height', `${maxHeight}px`);
+                bar.style.setProperty('--delay', `${delay}s`);
+                bar.style.setProperty('--duration', `${duration}s`);
+
+                waveformEl.appendChild(bar);
+            }
+        }
+
+        // Update timer
+        function updateTimer() {
+            seconds++;
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            timerEl.textContent = `${mins}:${secs}`;
+        }
+
+        // Add transcript line
+        function addTranscriptLine() {
+            if (transcriptIndex < mockTranscript.length) {
+                const item = mockTranscript[transcriptIndex];
+                const line = document.createElement('div');
+                line.className = 'transcript-line';
+                line.innerHTML = `
+                    <div class="transcript-speaker">${item.speaker}</div>
+                    <div class="transcript-text">${item.text}</div>
+                `;
+                transcriptEl.appendChild(line);
+                transcriptEl.scrollTop = transcriptEl.scrollHeight;
+                transcriptIndex++;
+            }
+        }
+
+        // Transcript panel toggle
+        function toggleTranscript() {
+            transcriptCollapsed = !transcriptCollapsed;
+            transcriptPanel.classList.toggle('collapsed', transcriptCollapsed);
+            transcriptExpand.classList.toggle('visible', transcriptCollapsed);
+        }
+
+        transcriptToggle.addEventListener('click', toggleTranscript);
+        transcriptExpand.addEventListener('click', toggleTranscript);
+
+        // Create mind map
+        function createMindMap() {
+            const svg = mindmapSvg;
+            const width = svg.clientWidth;
+            const height = svg.clientHeight;
+
+            // Scale positions based on actual SVG size
+            const scaleX = width / 1000;
+            const scaleY = height / 700;
+
+            svg.innerHTML = '';
+
+            // Create connections first (so they're behind nodes)
+            const connections = [];
+            mindmapData.nodes.forEach(node => {
+                node.connections.forEach(connId => {
+                    let target;
+                    if (connId === "center") {
+                        target = mindmapData.center;
+                    } else {
+                        target = mindmapData.nodes.find(n => n.id === connId);
+                    }
+                    if (target) {
+                        connections.push({
+                            x1: node.x * scaleX,
+                            y1: node.y * scaleY,
+                            x2: target.x * scaleX,
+                            y2: target.y * scaleY
+                        });
+                    }
+                });
+            });
+
+            // Draw connections with organic curves
+            connections.forEach((conn, i) => {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                const midX = (conn.x1 + conn.x2) / 2;
+                const midY = (conn.y1 + conn.y2) / 2;
+                const ctrlX = midX + (Math.random() - 0.5) * 60;
+                const ctrlY = midY + (Math.random() - 0.5) * 60;
+                path.setAttribute("d", `M ${conn.x1} ${conn.y1} Q ${ctrlX} ${ctrlY} ${conn.x2} ${conn.y2}`);
+                path.setAttribute("class", "connection");
+                path.style.animationDelay = `${i * 0.06}s`;
+                svg.appendChild(path);
+            });
+
+            // Draw center node
+            const centerGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            centerGroup.setAttribute("class", "node");
+            centerGroup.style.opacity = "0";
+            centerGroup.style.animation = "floatUp 0.6s 0.3s forwards";
+
+            const centerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            centerRect.setAttribute("x", mindmapData.center.x * scaleX - 110);
+            centerRect.setAttribute("y", mindmapData.center.y * scaleY - 32);
+            centerRect.setAttribute("width", 220);
+            centerRect.setAttribute("height", 64);
+            centerRect.setAttribute("fill", typeColors.center);
+            centerRect.setAttribute("class", "node-rect");
+            centerGroup.appendChild(centerRect);
+
+            const centerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            centerText.setAttribute("x", mindmapData.center.x * scaleX);
+            centerText.setAttribute("y", mindmapData.center.y * scaleY + 5);
+            centerText.setAttribute("class", "node-text");
+            centerText.textContent = mindmapData.center.label;
+            centerGroup.appendChild(centerText);
+
+            svg.appendChild(centerGroup);
+
+            // Draw other nodes
+            mindmapData.nodes.forEach((node, i) => {
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                group.setAttribute("class", "node");
+                group.style.opacity = "0";
+                group.style.animation = `floatUp 0.5s ${0.4 + i * 0.08}s forwards`;
+
+                const textWidth = node.label.length * 7 + 48;
+                const rectWidth = Math.max(textWidth, 130);
+
+                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                rect.setAttribute("x", node.x * scaleX - rectWidth / 2);
+                rect.setAttribute("y", node.y * scaleY - 24);
+                rect.setAttribute("width", rectWidth);
+                rect.setAttribute("height", 48);
+                rect.setAttribute("fill", typeColors[node.type]);
+                rect.setAttribute("class", "node-rect");
+                group.appendChild(rect);
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", node.x * scaleX);
+                text.setAttribute("y", node.y * scaleY + 5);
+                text.setAttribute("class", "node-text");
+                text.textContent = node.label;
+                group.appendChild(text);
+
+                svg.appendChild(group);
+            });
+        }
+
+        // State transitions
+        function setState(newState) {
+            currentState = newState;
+
+            stateIdle.classList.toggle('hidden', newState !== 'idle');
+            stateListening.classList.toggle('active', newState === 'listening');
+            stateProcessing.classList.toggle('active', newState === 'processing');
+            stateReveal.classList.toggle('active', newState === 'reveal');
+
+            startBtn.classList.toggle('hidden', newState !== 'idle');
+            revealBtn.classList.toggle('hidden', newState !== 'listening');
+        }
+
+        // Start listening
+        function startListening() {
+            setState('listening');
+            initWaveform();
+            seconds = 0;
+            transcriptIndex = 0;
+            transcriptEl.innerHTML = '';
+            transcriptCollapsed = false;
+            transcriptPanel.classList.remove('collapsed');
+            transcriptExpand.classList.remove('visible');
+
+            timerInterval = setInterval(updateTimer, 1000);
+
+            // Add transcript lines periodically
+            const transcriptInterval = setInterval(() => {
+                if (currentState !== 'listening') {
+                    clearInterval(transcriptInterval);
+                    return;
+                }
+                addTranscriptLine();
+            }, 1500);
+        }
+
+        // Show reveal
+        function showReveal() {
+            clearInterval(timerInterval);
+            setState('processing');
+
+            setTimeout(() => {
+                setState('reveal');
+                createMindMap();
+            }, 2000);
+        }
+
+        // Reset
+        function reset() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            transcriptIndex = 0;
+            timerEl.textContent = '00:00';
+            transcriptEl.innerHTML = '';
+            mindmapSvg.innerHTML = '';
+            setState('idle');
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startListening);
+        revealBtn.addEventListener('click', showReveal);
+        resetBtn.addEventListener('click', reset);
+
+        // Make idle circle clickable to start
+        document.querySelector('.idle-circle').addEventListener('click', startListening);
+
+        // Make listening orb clickable to visualize
+        document.querySelector('.orb-core').addEventListener('click', showReveal);
+
+        // Handle window resize for mind map
+        window.addEventListener('resize', () => {
+            if (currentState === 'reveal') {
+                createMindMap();
+            }
+        });
+
+        // Initialize
+        initWaveform();
+    </script>
+</body>
+</html>

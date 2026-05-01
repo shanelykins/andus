@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andus | Strategy & Prototypes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #F6F5F3;
+            --bg-card: #FFFFFF;
+            --accent: #2D4A3E;
+            --accent-light: #3D6354;
+            --accent-subtle: rgba(45, 74, 62, 0.06);
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-muted: #8A8A8A;
+            --border: #E8E6E3;
+            --success: #2D4A3E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 40px;
+        }
+
+        /* Header - Editorial magazine style */
+        .header {
+            text-align: center;
+            margin-bottom: 100px;
+            opacity: 0;
+            animation: fadeIn 1s ease 0.1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 32px;
+            margin-bottom: 48px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Newsreader', serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .date {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        h1 {
+            font-family: 'Newsreader', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 32px;
+        }
+
+        h1 em {
+            font-style: italic;
+        }
+
+        .hero-subtitle {
+            font-family: 'Newsreader', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .byline {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+        }
+
+        .byline strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin: 80px 0 60px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider-text {
+            font-family: 'Newsreader', serif;
+            font-size: 13px;
+            font-style: italic;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        /* Cards - Editorial layout */
+        .cards-strategy {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .card-featured-wrapper {
+            grid-column: span 2;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 4px;
+            padding: 44px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s ease;
+            opacity: 0;
+            animation: slideUp 0.6s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.15s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.08);
+        }
+
+        .card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .card-featured {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .card-featured .card-visual {
+            background: var(--accent-subtle);
+            border-radius: 2px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-visual-icon {
+            font-size: 48px;
+            color: var(--accent);
+        }
+
+        .card-eyebrow {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-family: 'Newsreader', serif;
+            font-size: 1.75rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+        }
+
+        .card-featured .card-title {
+            font-size: 2rem;
+        }
+
+        .card-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            transition: gap 0.3s ease;
+        }
+
+        .card:hover .card-link {
+            gap: 12px;
+        }
+
+        /* Prototypes */
+        .cards-prototypes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .card-prototype {
+            background: var(--bg-card);
+            border-radius: 4px;
+            padding: 36px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s ease;
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+            border-left: 3px solid transparent;
+        }
+
+        .card-prototype:nth-child(1) { animation-delay: 0.1s; }
+        .card-prototype:nth-child(2) { animation-delay: 0.15s; }
+        .card-prototype:nth-child(3) { animation-delay: 0.2s; }
+        .card-prototype:nth-child(4) { animation-delay: 0.25s; }
+
+        .card-prototype:hover {
+            border-left-color: var(--accent);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-prototype .card-icon {
+            font-size: 24px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .card-prototype .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .card-prototype .card-desc {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--success);
+        }
+
+        .status-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+            opacity: 0;
+            animation: fadeIn 0.8s ease 0.5s forwards;
+        }
+
+        .footer-logo {
+            font-family: 'Newsreader', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .footer-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .cards-strategy {
+                grid-template-columns: 1fr;
+            }
+            .card-featured-wrapper {
+                grid-column: auto;
+            }
+            .card-featured {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .card-featured .card-visual {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 60px 24px;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .header-top {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .cards-prototypes {
+                grid-template-columns: 1fr;
+            }
+            .divider {
+                margin: 60px 0 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">Andus</div>
+                <div class="date">April 2026</div>
+            </div>
+            <h1>Strategy <em>&</em><br>Prototypes</h1>
+            <p class="hero-subtitle">A comprehensive deliverable package covering product strategy, metrics analysis, and interactive prototypes for Andus's AI transformation suite.</p>
+            <div class="byline">Prepared by <strong>Shane Lykins</strong> for Andus Leadership</div>
+        </header>
+
+        <div class="divider" style="animation-delay: 0.2s;">
+            <div class="divider-line"></div>
+            <span class="divider-text">Part I</span>
+            <div class="divider-line"></div>
+        </div>
+
+        <section>
+            <div class="cards-strategy">
+                <div class="card-featured-wrapper">
+                    <a href="../andus-product-strategy.html" class="card card-featured">
+                        <div class="card-visual">
+                            <span class="card-visual-icon">&#9670;</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-eyebrow">Product Vision</div>
+                            <div class="card-title">Product Strategy One-Pager</div>
+                            <div class="card-desc">Complete ecosystem visualization: Simulator, Diagnostic, Quorum, Listening Tool, Product Factory, and Agents as Staff. Includes customer journey mapping and product tier structure.</div>
+                            <div class="card-link">Read document <span>&rarr;</span></div>
+                        </div>
+                    </a>
+                </div>
+
+                <a href="../andus-north-star-metrics.html" class="card">
+                    <div class="card-eyebrow">Metrics</div>
+                    <div class="card-title">North Star Analysis</div>
+                    <div class="card-desc">7 candidate metrics evaluated. Recommends "Capacity Created" as primary North Star.</div>
+                    <div class="card-link">Read analysis <span>&rarr;</span></div>
+                </a>
+
+                <a href="../andus-strategic-questions.html" class="card">
+                    <div class="card-eyebrow">Strategy</div>
+                    <div class="card-title">Open Questions</div>
+                    <div class="card-desc">10 critical decisions + 5 recommendations for the team.</div>
+                    <div class="card-link">Read questions <span>&rarr;</span></div>
+                </a>
+            </div>
+        </section>
+
+        <div class="divider" style="animation-delay: 0.35s;">
+            <div class="divider-line"></div>
+            <span class="divider-text">Part II</span>
+            <div class="divider-line"></div>
+        </div>
+
+        <section>
+            <div class="cards-prototypes">
+                <a href="../prototypes/whiteboard-listener.html" class="card-prototype">
+                    <div class="card-icon">&#9678;</div>
+                    <div class="card-title">Whiteboard Listener</div>
+                    <div class="card-desc">Talk &rarr; it listens &rarr; visualizes as mind map</div>
+                    <div class="status-badge"><span class="status-dot"></span> Interactive</div>
+                </a>
+
+                <a href="../prototypes/quorum-expert-panel.html" class="card-prototype">
+                    <div class="card-icon">&#9673;</div>
+                    <div class="card-title">Quorum Panel</div>
+                    <div class="card-desc">Select AI experts, get multi-perspective insights</div>
+                    <div class="status-badge"><span class="status-dot"></span> Interactive</div>
+                </a>
+
+                <a href="../prototypes/agents-as-staff.html" class="card-prototype">
+                    <div class="card-icon">&#9632;</div>
+                    <div class="card-title">Agents as Staff</div>
+                    <div class="card-desc">AI workforce dashboard with roles & costs</div>
+                    <div class="status-badge"><span class="status-dot"></span> Interactive</div>
+                </a>
+
+                <a href="../prototypes/listening-tool.html" class="card-prototype">
+                    <div class="card-icon">&#9835;</div>
+                    <div class="card-title">Transformation Pulse</div>
+                    <div class="card-desc">Real-time signals during AI transformation</div>
+                    <div class="status-badge"><span class="status-dot"></span> Interactive</div>
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-logo">Andus</div>
+            <div class="footer-meta">AI Transformation Consulting</div>
+        </footer>
+    </div>
+</body>
+</html>

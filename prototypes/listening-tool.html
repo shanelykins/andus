@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformation Pulse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #FAF9F7;
+            --bg-card: #FFFFFF;
+            --accent: #B8623B;
+            --accent-dark: #9A5232;
+            --text-primary: #1A1917;
+            --text-secondary: #5C5850;
+            --text-muted: #9C978D;
+            --border: #E8E6E1;
+            --positive: #2D7A5F;
+            --positive-bg: rgba(45, 122, 95, 0.08);
+            --concern: #C4704B;
+            --concern-bg: rgba(196, 112, 75, 0.08);
+            --blocker: #9A5232;
+            --blocker-bg: rgba(154, 82, 50, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Single column centered layout */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px 40px;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 12px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--positive-bg);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--positive);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--positive);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 600px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .header-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .header-btn.primary {
+            background: var(--text-primary);
+            color: white;
+            border: none;
+        }
+
+        .header-btn.primary:hover {
+            background: var(--text-secondary);
+        }
+
+        .header-btn.secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .header-btn.secondary:hover {
+            border-color: var(--text-muted);
+        }
+
+        .header-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* Stats Row */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        .stat-value.positive { color: var(--positive); }
+        .stat-value.concern { color: var(--concern); }
+
+        .stat-trend {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .stat-trend.up {
+            background: var(--positive-bg);
+            color: var(--positive);
+        }
+
+        .stat-trend.down {
+            background: var(--concern-bg);
+            color: var(--concern);
+        }
+
+        /* Recommended Actions - Horizontal */
+        .actions-section {
+            margin-bottom: 40px;
+        }
+
+        .actions-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .actions-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .action-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .action-priority {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .action-priority.urgent {
+            color: var(--concern);
+        }
+
+        .action-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        .action-cta {
+            width: 100%;
+            padding: 10px 16px;
+            background: var(--bg-page);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-cta:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--bg-card);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--text-muted);
+        }
+
+        .filter-btn.active {
+            background: var(--text-primary);
+            color: white;
+            border-color: var(--text-primary);
+        }
+
+        .filter-btn .count {
+            margin-left: 6px;
+            opacity: 0.6;
+        }
+
+        /* Feed */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .feed-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Animated List Container */
+        .feed-container {
+            position: relative;
+            min-height: 400px;
+        }
+
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feed-fade {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--bg-page) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Signal Cards - Premium Style with MagicUI Animation */
+        .signal {
+            position: relative;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 14px;
+            padding: 20px 24px;
+            background: var(--bg-card);
+            box-shadow:
+                0 0 0 1px rgba(0, 0, 0, 0.03),
+                0 2px 4px rgba(0, 0, 0, 0.05),
+                0 12px 24px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .signal:hover {
+            transform: scale(1.015);
+            box-shadow:
+                0 0 0 1px rgba(0, 0, 0, 0.05),
+                0 4px 8px rgba(0, 0, 0, 0.08),
+                0 16px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .signal::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 14px 0 0 14px;
+        }
+
+        .signal.positive::before { background: var(--positive); }
+        .signal.concern::before { background: var(--concern); }
+        .signal.blocker::before { background: var(--blocker); }
+
+        .signal-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .signal-source {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            background: var(--bg-page);
+            border-radius: 4px;
+        }
+
+        .signal-type {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .signal.positive .signal-type {
+            background: var(--positive-bg);
+            color: var(--positive);
+        }
+
+        .signal.concern .signal-type {
+            background: var(--concern-bg);
+            color: var(--concern);
+        }
+
+        .signal.blocker .signal-type {
+            background: var(--blocker-bg);
+            color: var(--blocker);
+        }
+
+        .signal-time {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .signal-content {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .signal-dept {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* MagicUI Animation */
+        @keyframes AnimatedListIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .signal.animating-in {
+            animation: AnimatedListIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .container {
+                padding: 32px 24px;
+            }
+            .header-top {
+                flex-direction: column;
+            }
+            .header-actions {
+                width: 100%;
+            }
+            .header-btn {
+                flex: 1;
+                justify-content: center;
+            }
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-bar {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                Monitoring Active
+            </div>
+            <div class="header-top">
+                <div>
+                    <h1>Transformation Pulse</h1>
+                    <p class="subtitle">AI monitors Slack, meetings, surveys, and support channels — surfacing wins to celebrate and friction to address.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn primary">
+                        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export
+                    </button>
+                    <button class="header-btn secondary">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        Settings
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Signals This Week</div>
+                <div class="stat-row">
+                    <div class="stat-value" id="totalCount">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Wins Captured</div>
+                <div class="stat-row">
+                    <div class="stat-value positive" id="winsCount">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Needs Attention</div>
+                <div class="stat-row">
+                    <div class="stat-value concern" id="concernCount">0</div>
+                </div>
+            </div>
+        </div>
+
+        <section class="actions-section">
+            <div class="actions-header">
+                <h2 class="actions-title">Recommended Actions</h2>
+            </div>
+            <div class="actions-grid">
+                <div class="action-card">
+                    <div class="action-priority urgent">This Week</div>
+                    <p class="action-text">Schedule tooling review with Engineering to address code review AI frustrations</p>
+                    <button class="action-cta">Schedule Meeting</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-priority">Opportunity</div>
+                    <p class="action-text">Sales & Marketing wins are strong — document and share playbook with other teams</p>
+                    <button class="action-cta">Create Playbook</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-priority">Follow Up</div>
+                    <p class="action-text">Check in with Legal on chatbot compliance review (blocking deployment)</p>
+                    <button class="action-cta">Send Reminder</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="positive">Wins</button>
+            <button class="filter-btn" data-filter="concern">Concerns</button>
+            <button class="filter-btn" data-filter="blocker">Blockers</button>
+        </div>
+
+        <div class="feed-header">
+            <h2 class="feed-title">Live Signal Feed</h2>
+        </div>
+
+        <div class="feed-container">
+            <div class="feed" id="feed">
+                <!-- Signals populated by JS -->
+            </div>
+            <div class="feed-fade"></div>
+        </div>
+    </div>
+
+    <script>
+        // All signals in queue - will appear one by one
+        const allSignals = [
+            {
+                type: 'positive',
+                source: 'Slack',
+                content: 'Sales team reported closing 3 deals this week using AI-generated proposals. "Cut our prep time in half."',
+                dept: 'Sales',
+                time: '2 min ago'
+            },
+            {
+                type: 'concern',
+                source: 'Survey',
+                content: 'Engineering team expressing frustration with new code review AI. "It flags too many false positives."',
+                dept: 'Engineering',
+                time: '5 min ago'
+            },
+            {
+                type: 'positive',
+                source: 'Meeting',
+                content: 'Customer success onboarded 12 new clients this month with AI-assisted training materials.',
+                dept: 'Customer Success',
+                time: '12 min ago'
+            },
+            {
+                type: 'blocker',
+                source: 'Support Ticket',
+                content: 'Legal team blocked deployment of customer-facing AI chatbot pending compliance review.',
+                dept: 'Legal',
+                time: '18 min ago'
+            },
+            {
+                type: 'positive',
+                source: 'Analytics',
+                content: 'Marketing campaign performance up 34% using AI-optimized copy and targeting.',
+                dept: 'Marketing',
+                time: '25 min ago'
+            },
+            {
+                type: 'concern',
+                source: 'Feedback Form',
+                content: 'Multiple teams reporting confusion about which AI tools to use for which tasks.',
+                dept: 'Operations',
+                time: '32 min ago'
+            },
+            {
+                type: 'positive',
+                source: 'Slack',
+                content: 'Finance team automated monthly reporting. "What used to take 2 days now takes 2 hours."',
+                dept: 'Finance',
+                time: '45 min ago'
+            },
+            {
+                type: 'positive',
+                source: 'Meeting',
+                content: 'Product team shipped new feature 40% faster using AI pair programming.',
+                dept: 'Product',
+                time: '1 hour ago'
+            },
+            {
+                type: 'concern',
+                source: 'Survey',
+                content: 'HR flagged concerns about AI tool adoption rates among senior leadership.',
+                dept: 'HR',
+                time: '1.5 hours ago'
+            },
+            {
+                type: 'positive',
+                source: 'Analytics',
+                content: 'Support ticket resolution time decreased by 28% with AI-suggested responses.',
+                dept: 'Support',
+                time: '2 hours ago'
+            },
+            {
+                type: 'positive',
+                source: 'Slack',
+                content: 'Design team created 50+ asset variations in one afternoon using AI image tools.',
+                dept: 'Design',
+                time: '2.5 hours ago'
+            },
+            {
+                type: 'concern',
+                source: 'Feedback Form',
+                content: 'Data team requesting better documentation for AI model outputs and limitations.',
+                dept: 'Data Science',
+                time: '3 hours ago'
+            }
+        ];
+
+        let signalIndex = 0;
+        let totalCount = 0;
+        let winsCount = 0;
+        let concernCount = 0;
+        const feed = document.getElementById('feed');
+        const maxVisible = 7;
+
+        function getTypeLabel(type) {
+            const labels = {
+                positive: 'Win',
+                concern: 'Concern',
+                blocker: 'Blocker'
+            };
+            return labels[type] || type;
+        }
+
+        function createSignalElement(signal) {
+            const el = document.createElement('div');
+            el.className = `signal ${signal.type} animating-in`;
+            el.innerHTML = `
+                <div class="signal-meta">
+                    <span class="signal-source">${signal.source}</span>
+                    <span class="signal-type">${getTypeLabel(signal.type)}</span>
+                    <span class="signal-time">Just now</span>
+                </div>
+                <p class="signal-content">${signal.content}</p>
+                <div class="signal-dept">${signal.dept}</div>
+            `;
+            return el;
+        }
+
+        function updateCounters() {
+            document.getElementById('totalCount').textContent = totalCount;
+            document.getElementById('winsCount').textContent = winsCount;
+            document.getElementById('concernCount').textContent = concernCount;
+        }
+
+        function addNextSignal() {
+            const signal = allSignals[signalIndex % allSignals.length];
+            signalIndex++;
+
+            const newEl = createSignalElement(signal);
+            feed.insertBefore(newEl, feed.firstChild);
+
+            // Update counts
+            totalCount++;
+            if (signal.type === 'positive') {
+                winsCount++;
+            } else {
+                concernCount++;
+            }
+            updateCounters();
+
+            // Remove animation class after it completes
+            setTimeout(() => {
+                newEl.classList.remove('animating-in');
+            }, 400);
+
+            // Remove oldest to keep list manageable
+            const visibleSignals = feed.querySelectorAll('.signal');
+            if (visibleSignals.length > maxVisible) {
+                const oldest = visibleSignals[visibleSignals.length - 1];
+                oldest.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                oldest.style.opacity = '0';
+                oldest.style.transform = 'scale(0.95)';
+                setTimeout(() => oldest.remove(), 300);
+            }
+        }
+
+        function startFeed() {
+            // Reset counters to zero
+            totalCount = 0;
+            winsCount = 0;
+            concernCount = 0;
+            updateCounters();
+
+            // Add signals one by one with delay
+            let delay = 800; // Initial delay before first signal
+            for (let i = 0; i < maxVisible; i++) {
+                setTimeout(() => {
+                    addNextSignal();
+                }, delay + (i * 1200)); // 1.2s between each initial signal
+            }
+
+            // After initial population, continue adding every 4 seconds
+            setTimeout(() => {
+                setInterval(addNextSignal, 4000);
+            }, delay + (maxVisible * 1200) + 2000);
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.signal').forEach(signal => {
+                    if (filter === 'all' || signal.classList.contains(filter)) {
+                        signal.style.display = 'block';
+                    } else {
+                        signal.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Start with empty feed, then populate one by one
+        startFeed();
+    </script>
+</body>
+</html>

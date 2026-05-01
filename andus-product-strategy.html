@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andus Product Strategy | AI Transformation Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #FAF9F7;
+            --bg-card: #FFFFFF;
+            --accent: #B8623B;
+            --accent-dark: #9A5232;
+            --text-primary: #1A1917;
+            --text-secondary: #5C5850;
+            --text-muted: #9C978D;
+            --border: #E8E6E1;
+            --shadow-warm: 0 4px 24px rgba(184, 98, 59, 0.06);
+            --shadow-warm-lg: 0 12px 48px rgba(184, 98, 59, 0.10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes drawLine {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 15px;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-page) 100%);
+            padding: 80px 60px 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 60px;
+            align-items: end;
+        }
+
+        .hero-main {
+            animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(184, 98, 59, 0.08);
+            border: 1px solid rgba(184, 98, 59, 0.15);
+            padding: 8px 18px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .hero-badge-text {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .hero-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 120px;
+            font-weight: 400;
+            letter-spacing: -4px;
+            color: var(--text-primary);
+            line-height: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .hero-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .hero-divider {
+            width: 80px;
+            height: 2px;
+            background: var(--accent);
+            margin-bottom: 24px;
+            animation: drawLine 1s ease-out 0.5s forwards;
+            width: 0;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 480px;
+            line-height: 1.8;
+        }
+
+        .hero-meta {
+            text-align: right;
+            animation: fadeIn 0.8s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+
+        .doc-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .doc-type {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .meta-item {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .meta-item strong {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px 80px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 48px;
+            padding-top: 80px;
+        }
+
+        .section-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 400;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .section-title-group {
+            flex: 1;
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .section-line {
+            flex: 0 0 200px;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+        }
+
+        /* Product Ecosystem - 3 Column Tiered Layout */
+        .ecosystem-tiers {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 1fr;
+            gap: 32px;
+            position: relative;
+        }
+
+        .tier-column {
+            animation: slideUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .tier-column:nth-child(1) { animation-delay: 0.1s; }
+        .tier-column:nth-child(2) { animation-delay: 0.25s; }
+        .tier-column:nth-child(3) { animation-delay: 0.4s; }
+
+        .tier-header {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent);
+            position: relative;
+        }
+
+        .tier-number {
+            position: absolute;
+            top: -12px;
+            right: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 72px;
+            font-weight: 300;
+            color: rgba(184, 98, 59, 0.08);
+            line-height: 1;
+        }
+
+        .tier-badge {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .tier-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .product-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--shadow-warm);
+            border: 1px solid rgba(232, 230, 225, 0.8);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-warm-lg);
+            border-color: rgba(184, 98, 59, 0.2);
+        }
+
+        .product-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        .product-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .product-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .status {
+            font-size: 9px;
+            padding: 4px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .status.active {
+            background: rgba(184, 98, 59, 0.1);
+            color: var(--accent);
+        }
+
+        .status.planned {
+            background: rgba(156, 151, 141, 0.15);
+            color: var(--text-muted);
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .product-highlight {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .product-highlight::before {
+            content: "";
+            width: 16px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        /* Factory Flow */
+        .factory-flow {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .flow-step {
+            font-size: 10px;
+            padding: 6px 14px;
+            background: var(--bg-page);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(184, 98, 59, 0.05);
+        }
+
+        .flow-arrow {
+            color: var(--accent);
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        /* Capabilities */
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .capability-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 10px 14px;
+            background: var(--bg-page);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .capability-item:hover {
+            background: rgba(184, 98, 59, 0.05);
+            color: var(--text-primary);
+        }
+
+        .capability-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Customer Journey Timeline */
+        .journey-section {
+            margin-top: 100px;
+        }
+
+        .journey-timeline {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: var(--shadow-warm-lg);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        .journey-timeline::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            right: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--border), var(--accent));
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .journey-stages {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .journey-stage {
+            text-align: center;
+            position: relative;
+        }
+
+        .journey-stage:nth-child(1) { animation: fadeIn 0.6s ease-out 0.6s forwards; opacity: 0; }
+        .journey-stage:nth-child(2) { animation: fadeIn 0.6s ease-out 0.75s forwards; opacity: 0; }
+        .journey-stage:nth-child(3) { animation: fadeIn 0.6s ease-out 0.9s forwards; opacity: 0; }
+        .journey-stage:nth-child(4) { animation: fadeIn 0.6s ease-out 1.05s forwards; opacity: 0; }
+
+        .stage-connector {
+            position: absolute;
+            top: 40px;
+            right: -20px;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+            z-index: 2;
+        }
+
+        .journey-stage:last-child .stage-connector {
+            display: none;
+        }
+
+        .stage-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 32px rgba(184, 98, 59, 0.15);
+            transition: all 0.4s ease;
+        }
+
+        .journey-stage:hover .stage-icon-wrapper {
+            background: var(--accent);
+            transform: scale(1.08);
+        }
+
+        .journey-stage:hover .stage-icon-wrapper svg {
+            color: white;
+        }
+
+        .stage-icon-wrapper svg {
+            width: 32px;
+            height: 32px;
+            color: var(--accent);
+            transition: all 0.4s ease;
+        }
+
+        .stage-phase {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .stage-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .stage-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Support Loop */
+        .support-loop {
+            margin-top: 48px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+            animation: fadeIn 0.8s ease-out 1.2s forwards;
+            opacity: 0;
+        }
+
+        .loop-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .loop-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+        }
+
+        .loop-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .loop-item {
+            background: var(--bg-page);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 28px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .loop-item:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .loop-connector {
+            font-size: 20px;
+            color: var(--accent);
+            opacity: 0.5;
+        }
+
+        /* Bottom Sections Grid */
+        .bottom-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 80px;
+        }
+
+        .bottom-card {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: var(--shadow-warm);
+            border: 1px solid rgba(232, 230, 225, 0.8);
+            transition: all 0.4s ease;
+        }
+
+        .bottom-card:nth-child(1) { animation: fadeIn 0.8s ease-out 1.3s forwards; opacity: 0; }
+        .bottom-card:nth-child(2) { animation: fadeIn 0.8s ease-out 1.45s forwards; opacity: 0; }
+
+        .bottom-card:hover {
+            box-shadow: var(--shadow-warm-lg);
+        }
+
+        .bottom-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bottom-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(184, 98, 59, 0.08);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .bottom-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .bottom-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .bottom-intro {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .placeholder-list {
+            list-style: none;
+        }
+
+        .placeholder-list li {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .placeholder-list li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .placeholder-list li::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid var(--text-muted);
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .placeholder-list li:hover {
+            color: var(--text-primary);
+            padding-left: 8px;
+        }
+
+        .placeholder-list li:hover::before {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 100px;
+            padding: 40px 60px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            animation: fadeIn 0.8s ease-out 1.6s forwards;
+            opacity: 0;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .confidential-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .confidential-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .footer-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .footer-right {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero {
+                padding: 60px 40px 80px;
+            }
+            .main-content {
+                padding: 0 40px 60px;
+            }
+            .hero-brand {
+                font-size: 80px;
+            }
+            .ecosystem-tiers {
+                grid-template-columns: 1fr 1fr;
+            }
+            .tier-column:nth-child(3) {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                padding: 40px 24px 60px;
+            }
+            .main-content {
+                padding: 0 24px 40px;
+            }
+            .footer {
+                padding: 32px 24px;
+            }
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .hero-meta {
+                text-align: left;
+            }
+            .hero-brand {
+                font-size: 60px;
+                letter-spacing: -2px;
+            }
+            .ecosystem-tiers {
+                grid-template-columns: 1fr;
+            }
+            .tier-column:nth-child(3) {
+                grid-column: auto;
+            }
+            .journey-timeline {
+                padding: 40px 24px;
+            }
+            .journey-timeline::before {
+                display: none;
+            }
+            .journey-stages {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+            .stage-connector {
+                display: none;
+            }
+            .bottom-sections {
+                grid-template-columns: 1fr;
+            }
+            .loop-visual {
+                flex-wrap: wrap;
+            }
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .footer-left {
+                flex-direction: column;
+            }
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            .tier-column, .bottom-card, .journey-timeline, .journey-stage, .support-loop, .footer, .hero-meta, .hero-divider {
+                animation: none;
+                opacity: 1;
+            }
+            .hero {
+                padding: 40px;
+            }
+            .main-content {
+                padding: 0 40px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-main">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    <span class="hero-badge-text">Strategic Document</span>
+                </div>
+                <h1 class="hero-brand">ANDUS</h1>
+                <p class="hero-tagline">AI Transformation Suite</p>
+                <div class="hero-divider"></div>
+                <p class="hero-subtitle">
+                    A comprehensive product ecosystem designed to guide enterprises through AI transformation - from executive education to operational execution.
+                </p>
+            </div>
+            <div class="hero-meta">
+                <h2 class="doc-title">Product Strategy</h2>
+                <div class="doc-type">One-Pager</div>
+                <div class="meta-item"><strong>Date:</strong> April 2026</div>
+                <div class="meta-item"><strong>Author:</strong> Shane Lykins</div>
+                <div class="meta-item"><strong>Version:</strong> 1.0</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Product Ecosystem Section -->
+        <section>
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <div class="section-title-group">
+                    <div class="section-label">Core Offerings</div>
+                    <h2 class="section-title">Product Ecosystem</h2>
+                </div>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="ecosystem-tiers">
+                <!-- Tier 1: Executive Level -->
+                <div class="tier-column">
+                    <div class="tier-header">
+                        <span class="tier-number">01</span>
+                        <div class="tier-badge">Tier One</div>
+                        <h3 class="tier-name">Executive Level</h3>
+                    </div>
+                    <div class="product-stack">
+                        <div class="product-card">
+                            <div class="product-icon">
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="6" y="6" width="36" height="36" rx="4"/>
+                                    <path d="M6 18h36"/>
+                                    <path d="M18 18v24"/>
+                                    <circle cx="30" cy="30" r="6"/>
+                                    <path d="M34 34l4 4"/>
+                                </svg>
+                            </div>
+                            <div class="product-header">
+                                <span class="product-name">Simulator</span>
+                                <span class="status active">Active</span>
+                            </div>
+                            <p class="product-desc">
+                                Multiplayer experience where teams act as C-suite of a fictional company managing an 18-month AI transformation. Events trigger decisions that affect outcomes.
+                            </p>
+                            <div class="product-highlight">Currently deployed for ServiceNow event</div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-icon">
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 8h24a4 4 0 014 4v24a4 4 0 01-4 4H12a4 4 0 01-4-4V12a4 4 0 014-4z"/>
+                                    <path d="M14 20h20"/>
+                                    <path d="M14 28h14"/>
+                                    <path d="M14 36h8"/>
+                                    <circle cx="36" cy="36" r="6"/>
+                                    <path d="M36 33v6"/>
+                                    <path d="M33 36h6"/>
+                                </svg>
+                            </div>
+                            <div class="product-header">
+                                <span class="product-name">Diagnostic Toolkit</span>
+                                <span class="status active">Active</span>
+                            </div>
+                            <p class="product-desc">
+                                Assesses "Human OS" readiness for AI. 29 questions + 300 failure patterns (tinder-style). Generates exportable diagnostic report for Claude/ChatGPT interrogation.
+                            </p>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-icon">
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="24" cy="14" r="6"/>
+                                    <circle cx="12" cy="34" r="6"/>
+                                    <circle cx="36" cy="34" r="6"/>
+                                    <path d="M20 18l-4 10"/>
+                                    <path d="M28 18l4 10"/>
+                                    <path d="M18 34h12"/>
+                                </svg>
+                            </div>
+                            <div class="product-header">
+                                <span class="product-name">Quorum</span>
+                                <span class="status active">Active</span>
+                            </div>
+                            <p class="product-desc">
+                                60+ AI personas based on domain experts. Assemble a "cast of characters" to think through complex business problems.
+                            </p>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-icon">
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 24c0-8.837 7.163-16 16-16s16 7.163 16 16"/>
+                                    <path d="M8 24a16 16 0 0016 16"/>
+                                    <path d="M24 40a16 16 0 0016-16"/>
+                                    <circle cx="24" cy="24" r="4"/>
+                                    <path d="M24 8v4"/>
+                                    <path d="M24 36v4"/>
+                                    <path d="M8 24h4"/>
+                                    <path d="M36 24h4"/>
+                                </svg>
+                            </div>
+                            <div class="product-header">
+                                <span class="product-name">Listening Tool</span>
+                                <span class="status planned">Planned</span>
+                            </div>
+                            <p class="product-desc">
+                                Captures signals from the business during transformation - surfacing what's working and what isn't in real-time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tier 2: Product Factory -->
+                <div class="tier-column">
+                    <div class="tier-header">
+                        <span class="tier-number">02</span>
+                        <div class="tier-badge">Tier Two</div>
+                        <h3 class="tier-name">Product Factory</h3>
+                    </div>
+                    <div class="product-stack">
+                        <div class="product-card">
+                            <div class="product-icon">
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 12l18-6 18 6v6l-18 6-18-6v-6z"/>
+                                    <path d="M6 24l18 6 18-6"/>
+                                    <path d="M6 36l18 6 18-6"/>
+                                    <path d="M6 18v18"/>
+                                    <path d="M42 18v18"/>
+                                </svg>
+                            </div>
+                            <div class="product-header">
+                                <span class="product-name">Factory Engine</span>
+                            </div>
+                            <p class="product-desc">
+                                An intelligent wrapper around Codex that transforms product briefs into working software. Creates "dynamic proofs of concept" so executives can experience what different could look like before committing.
+                            </p>
+                            <div class="product-highlight">MCP-connected to Claude with product brief skills</div>
+
+                            <div class="factory-flow">
+                                <span class="flow-step">Product Brief</span>
+                                <span class="flow-arrow">&rarr;</span>
+                                <span class="flow-step">Decompose</span>
+                                <span class="flow-arrow">&rarr;</span>
+                                <span class="flow-step">Build via Codex</span>
+                                <span class="flow-arrow">&rarr;</span>
+                                <span class="flow-step">Test</span>
+                                <span class="flow-arrow">&rarr;</span>
+                                <span class="flow-step">Deploy to Render</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tier 3: Agents as Staff -->
+                <div class="tier-column">
+                    <div class="tier-header">
+                        <span class="tier-number">03</span>
+                        <div class="tier-badge">Tier Three</div>
+                        <h3 class="tier-name">Agents as Staff</h3>
+                    </div>
+                    <div class="product-stack">
+                        <div class="product-card">
+                            <div class="product-icon">
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="24" cy="12" r="6"/>
+                                    <path d="M12 42v-8a12 12 0 0124 0v8"/>
+                                    <path d="M32 24l8-4"/>
+                                    <path d="M40 20v8"/>
+                                    <path d="M16 24l-8-4"/>
+                                    <path d="M8 20v8"/>
+                                </svg>
+                            </div>
+                            <div class="product-header">
+                                <span class="product-name">AI Agent Workforce</span>
+                            </div>
+                            <p class="product-desc">
+                                The paradigm shift from AI as chat interfaces to AI as employees with defined roles, responsibilities, and autonomous capabilities.
+                            </p>
+                            <div class="product-highlight">Multi-Claude "open floor" architecture</div>
+
+                            <div class="capabilities-grid">
+                                <div class="capability-item">
+                                    <span class="capability-dot"></span>
+                                    Persistent memory & context
+                                </div>
+                                <div class="capability-item">
+                                    <span class="capability-dot"></span>
+                                    Cross-agent collaboration
+                                </div>
+                                <div class="capability-item">
+                                    <span class="capability-dot"></span>
+                                    Proactive task execution
+                                </div>
+                                <div class="capability-item">
+                                    <span class="capability-dot"></span>
+                                    Human-in-the-loop escalation
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Journey Section -->
+        <section class="journey-section">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <div class="section-title-group">
+                    <div class="section-label">Engagement Model</div>
+                    <h2 class="section-title">Customer Journey</h2>
+                </div>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="journey-timeline">
+                <div class="journey-stages">
+                    <div class="journey-stage">
+                        <div class="stage-icon-wrapper">
+                            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 4l12 8v12l-12 8-12-8V12l12-8z"/>
+                                <path d="M16 12v8"/>
+                                <path d="M12 14l4 2 4-2"/>
+                            </svg>
+                        </div>
+                        <div class="stage-phase">Phase 1</div>
+                        <h4 class="stage-title">Onboarding</h4>
+                        <p class="stage-desc">Learn AI transformation through immersive simulation experience</p>
+                    </div>
+
+                    <div class="journey-stage">
+                        <div class="stage-icon-wrapper">
+                            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="6" width="24" height="20" rx="2"/>
+                                <path d="M10 14h12"/>
+                                <path d="M10 18h8"/>
+                                <path d="M10 22h4"/>
+                            </svg>
+                        </div>
+                        <div class="stage-phase">Phase 2</div>
+                        <h4 class="stage-title">Assessment</h4>
+                        <p class="stage-desc">Evaluate organizational readiness and identify failure patterns</p>
+                    </div>
+
+                    <div class="journey-stage">
+                        <div class="stage-icon-wrapper">
+                            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="16" cy="16" r="10"/>
+                                <path d="M16 10v6l4 4"/>
+                                <path d="M26 16h2"/>
+                                <path d="M4 16h2"/>
+                                <path d="M16 4v2"/>
+                                <path d="M16 26v2"/>
+                            </svg>
+                        </div>
+                        <div class="stage-phase">Phase 3</div>
+                        <h4 class="stage-title">Support Loop</h4>
+                        <p class="stage-desc">Continuous refinement cycle with expert guidance</p>
+                    </div>
+
+                    <div class="journey-stage">
+                        <div class="stage-icon-wrapper">
+                            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 8h24v16H4z"/>
+                                <path d="M8 12h4v8H8z"/>
+                                <path d="M14 14h10"/>
+                                <path d="M14 18h6"/>
+                                <circle cx="24" cy="4" r="2"/>
+                                <circle cx="28" cy="8" r="2"/>
+                            </svg>
+                        </div>
+                        <div class="stage-phase">Phase 4</div>
+                        <h4 class="stage-title">Execution</h4>
+                        <p class="stage-desc">Day-to-day AI-powered operations with Agents + Factory</p>
+                    </div>
+                </div>
+
+                <div class="support-loop">
+                    <div class="loop-header">
+                        <span class="loop-label">Continuous Support Loop</span>
+                    </div>
+                    <div class="loop-visual">
+                        <span class="loop-item">Quorum</span>
+                        <span class="loop-connector">&harr;</span>
+                        <span class="loop-item">Listening Tool</span>
+                        <span class="loop-connector">&harr;</span>
+                        <span class="loop-item">Diagnostic</span>
+                        <span class="loop-connector">&#8635;</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Sections -->
+        <div class="bottom-sections">
+            <div class="bottom-card">
+                <div class="bottom-header">
+                    <div class="bottom-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                    </div>
+                    <h3 class="bottom-title">North Star Metrics</h3>
+                </div>
+                <p class="bottom-intro">Metrics to be defined based on strategic priorities...</p>
+                <ul class="placeholder-list">
+                    <li>Metric placeholder 1</li>
+                    <li>Metric placeholder 2</li>
+                    <li>Metric placeholder 3</li>
+                    <li>Metric placeholder 4</li>
+                </ul>
+            </div>
+
+            <div class="bottom-card">
+                <div class="bottom-header">
+                    <div class="bottom-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                    </div>
+                    <h3 class="bottom-title">Open Questions</h3>
+                </div>
+                <p class="bottom-intro">Strategic questions requiring further discussion...</p>
+                <ul class="placeholder-list">
+                    <li>Question placeholder 1</li>
+                    <li>Question placeholder 2</li>
+                    <li>Question placeholder 3</li>
+                    <li>Question placeholder 4</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span class="confidential-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                    Confidential
+                </span>
+                <span class="footer-brand">Andus AI Transformation Consulting</span>
+            </div>
+            <div class="footer-right">
+                Strategy synthesis from Mike + Shane strategy call
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

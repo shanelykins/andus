@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andus North Star Metric Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #FAF9F7;
+            --bg-card: #FFFFFF;
+            --accent: #B8623B;
+            --accent-dark: #9A5232;
+            --text-primary: #1A1917;
+            --text-secondary: #5C5850;
+            --text-muted: #9C978D;
+            --border: rgba(156, 151, 141, 0.2);
+            --shadow-soft: 0 2px 8px rgba(26, 25, 23, 0.04), 0 8px 24px rgba(26, 25, 23, 0.06);
+            --shadow-hover: 0 4px 12px rgba(26, 25, 23, 0.06), 0 12px 32px rgba(26, 25, 23, 0.08);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.75;
+            min-height: 100vh;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 40px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 100px;
+            animation: fadeIn 0.7s ease-out both;
+        }
+
+        .document-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            line-height: 1.15;
+        }
+
+        .subtitle {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            font-weight: 400;
+            max-width: 640px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 48px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out both;
+        }
+
+        /* Challenge Section */
+        .challenge-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 56px;
+            margin-bottom: 80px;
+            box-shadow: var(--shadow-soft);
+            animation: fadeIn 0.6s ease-out 0.1s both;
+        }
+
+        .challenge-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .challenge-section p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 28px;
+        }
+
+        .challenge-section strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .criteria-item {
+            background: var(--bg-page);
+            border-radius: 14px;
+            padding: 20px 24px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .criteria-item::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Metrics Grid */
+        .metrics-section {
+            margin-bottom: 100px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            gap: 32px;
+        }
+
+        /* Individual Metric Card */
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: var(--shadow-soft);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            animation: fadeIn 0.6s ease-out both;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 120px 1fr;
+        }
+
+        .metric-card:nth-child(1) { animation-delay: 0.05s; }
+        .metric-card:nth-child(2) { animation-delay: 0.1s; }
+        .metric-card:nth-child(3) { animation-delay: 0.15s; }
+        .metric-card:nth-child(4) { animation-delay: 0.2s; }
+        .metric-card:nth-child(5) { animation-delay: 0.25s; }
+        .metric-card:nth-child(6) { animation-delay: 0.3s; }
+        .metric-card:nth-child(7) { animation-delay: 0.35s; }
+
+        .metric-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Large Number Column */
+        .metric-number-col {
+            background: linear-gradient(135deg, var(--bg-page) 0%, #F5F4F2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid var(--border);
+        }
+
+        .metric-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* Metric Content */
+        .metric-content {
+            padding: 40px 44px;
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .metric-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        /* Narrative Fit Badges */
+        .narrative-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+
+        .badge-weak {
+            background: #F5F4F2;
+            color: var(--text-muted);
+        }
+
+        .badge-moderate {
+            background: #FEF7ED;
+            color: #B87A2B;
+        }
+
+        .badge-strong {
+            background: #ECFDF5;
+            color: #0F766E;
+        }
+
+        .badge-excellent {
+            background: var(--accent);
+            color: #FFFFFF;
+        }
+
+        /* Definition */
+        .metric-definition {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+            line-height: 1.7;
+        }
+
+        /* Pros/Cons Grid */
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .pros-col h4,
+        .cons-col h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+
+        .pros-col h4 {
+            color: #0F766E;
+        }
+
+        .cons-col h4 {
+            color: var(--accent-dark);
+        }
+
+        .pros-col ul,
+        .cons-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pros-col li,
+        .cons-col li {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            padding-left: 18px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .pros-col li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            background: #0F766E;
+            border-radius: 50%;
+        }
+
+        .cons-col li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .pros-col li strong,
+        .cons-col li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Highlighted Metric (Capacity Created) */
+        .metric-card.highlighted {
+            border: 2px solid var(--accent);
+            position: relative;
+        }
+
+        .metric-card.highlighted .metric-number-col {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        }
+
+        .metric-card.highlighted .metric-number {
+            color: #FFFFFF;
+            opacity: 1;
+        }
+
+        .highlight-label {
+            position: absolute;
+            top: -1px;
+            right: 40px;
+            background: var(--accent);
+            color: #FFFFFF;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 8px 20px;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* Recommendation Section */
+        .recommendation-section {
+            margin-bottom: 80px;
+        }
+
+        .recommendation-card {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            border-radius: 24px;
+            padding: 64px;
+            color: #FFFFFF;
+            animation: fadeInScale 0.7s ease-out 0.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommendation-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .recommendation-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            opacity: 0.85;
+            margin-bottom: 16px;
+        }
+
+        .recommendation-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .recommendation-card .metric-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 32px;
+        }
+
+        .recommendation-card p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            margin-bottom: 32px;
+            max-width: 700px;
+        }
+
+        .reasons-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 16px;
+        }
+
+        .reasons-list li {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 20px 28px;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .reasons-list li strong {
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .reason-number {
+            background: rgba(255, 255, 255, 0.2);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        /* Metric Pairing */
+        .metric-pairing {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .pairing-card {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 36px;
+            box-shadow: var(--shadow-soft);
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        .pairing-card:nth-child(2) {
+            animation-delay: 0.35s;
+        }
+
+        .pairing-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .pairing-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .pairing-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Implementation Section */
+        .implementation-section {
+            margin-bottom: 60px;
+        }
+
+        .implementation-intro {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 48px;
+            animation: fadeIn 0.6s ease-out both;
+        }
+
+        .implementation-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .implementation-item {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px 36px;
+            box-shadow: var(--shadow-soft);
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 24px;
+            align-items: start;
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        .implementation-item:nth-child(1) { animation-delay: 0.1s; }
+        .implementation-item:nth-child(2) { animation-delay: 0.15s; }
+        .implementation-item:nth-child(3) { animation-delay: 0.2s; }
+        .implementation-item:nth-child(4) { animation-delay: 0.25s; }
+        .implementation-item:nth-child(5) { animation-delay: 0.3s; }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--bg-page) 0%, #F0EFED 100%);
+            border: 2px solid var(--accent);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .implementation-content h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .implementation-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+            animation: fadeIn 0.6s ease-out 0.4s both;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .metric-card {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-number-col {
+                padding: 24px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .metric-number {
+                font-size: 2.5rem;
+            }
+
+            .highlight-label {
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 24px;
+            }
+
+            h1 {
+                font-size: 2.4rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .challenge-section {
+                padding: 36px 28px;
+            }
+
+            .pros-cons-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .metric-content {
+                padding: 28px;
+            }
+
+            .metric-pairing {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendation-card {
+                padding: 40px 28px;
+            }
+
+            .recommendation-card h3 {
+                font-size: 1.9rem;
+            }
+
+            .implementation-item {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .step-number {
+                width: 48px;
+                height: 48px;
+                font-size: 1.25rem;
+            }
+
+            header {
+                margin-bottom: 60px;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .metric-card,
+            .recommendation-card {
+                box-shadow: none;
+                break-inside: avoid;
+            }
+
+            .metric-card:hover {
+                box-shadow: none;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="document-label">Strategic Analysis</span>
+            <h1>Andus North Star Metric Analysis</h1>
+            <p class="subtitle">A comprehensive evaluation of potential North Star metrics for Andus's AI transformation consulting practice.</p>
+        </header>
+
+        <div class="challenge-section">
+            <h2>The Challenge</h2>
+            <p>Andus helps companies "recompose" their business operating system for AI--transforming processes, workflows, people, and tooling. A North Star metric must capture the essence of successful transformation: <strong>if this number moves in the right direction, Andus is doing its job.</strong></p>
+
+            <p>The ideal metric should:</p>
+            <div class="criteria-grid">
+                <div class="criteria-item">Be measurable across diverse client organizations</div>
+                <div class="criteria-item">Align incentives between Andus and clients</div>
+                <div class="criteria-item">Tell a compelling story about AI transformation</div>
+                <div class="criteria-item">Avoid perverse incentives (like celebrating layoffs)</div>
+                <div class="criteria-item">Be simple enough to rally around</div>
+            </div>
+        </div>
+
+        <section class="metrics-section">
+            <h2 class="section-title">Metric Analysis</h2>
+
+            <div class="metrics-grid">
+                <!-- Metric 1 -->
+                <div class="metric-card">
+                    <div class="metric-number-col">
+                        <span class="metric-number">01</span>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-header">
+                            <h3 class="metric-name">Revenue per Employee</h3>
+                            <span class="narrative-badge badge-weak">Narrative Fit: Weak</span>
+                        </div>
+                        <p class="metric-definition">Total company revenue divided by full-time equivalent employees. Tracked quarterly or annually, measured as change from baseline (pre-engagement).</p>
+                        <div class="pros-cons-grid">
+                            <div class="pros-col">
+                                <h4>Why It Works</h4>
+                                <ul>
+                                    <li>Universally understood business metric</li>
+                                    <li>Directly ties to ROI and business outcomes</li>
+                                    <li>Easy to benchmark across industries</li>
+                                    <li>CFOs and boards already track this</li>
+                                    <li>Captures the "do more with less" promise of AI</li>
+                                </ul>
+                            </div>
+                            <div class="cons-col">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li><strong>The human cost problem:</strong> As Mike noted, optimizing for this metric implicitly celebrates headcount reduction</li>
+                                    <li>Doesn't distinguish between healthy growth and unhealthy cost-cutting</li>
+                                    <li>Can be gamed through outsourcing or contractor classification</li>
+                                    <li>Lagging indicator--takes quarters to see movement</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 2 -->
+                <div class="metric-card">
+                    <div class="metric-number-col">
+                        <span class="metric-number">02</span>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-header">
+                            <h3 class="metric-name">Decision Velocity</h3>
+                            <span class="narrative-badge badge-strong">Narrative Fit: Strong</span>
+                        </div>
+                        <p class="metric-definition">The average time from when a business question is raised to when a decision is made and communicated. Measured in hours or days, segmented by decision type.</p>
+                        <div class="pros-cons-grid">
+                            <div class="pros-col">
+                                <h4>Why It Works</h4>
+                                <ul>
+                                    <li>Captures organizational agility--the core promise of AI transformation</li>
+                                    <li>Applies across all departments and functions</li>
+                                    <li>Positive framing--about enabling speed, not reducing people</li>
+                                    <li>AI's superpower is reducing information gathering and synthesis time</li>
+                                </ul>
+                            </div>
+                            <div class="cons-col">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li>Difficult to measure consistently</li>
+                                    <li>Risk of incentivizing hasty decisions over good ones</li>
+                                    <li>Requires instrumentation that most companies don't have</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 3 -->
+                <div class="metric-card">
+                    <div class="metric-number-col">
+                        <span class="metric-number">03</span>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-header">
+                            <h3 class="metric-name">AI Utilization Rate</h3>
+                            <span class="narrative-badge badge-moderate">Narrative Fit: Moderate</span>
+                        </div>
+                        <p class="metric-definition">Percentage of employees actively using AI tools weekly, weighted by depth of usage.</p>
+                        <div class="pros-cons-grid">
+                            <div class="pros-col">
+                                <h4>Why It Works</h4>
+                                <ul>
+                                    <li>Directly measures adoption--the precondition for all other benefits</li>
+                                    <li>Leading indicator that predicts downstream outcomes</li>
+                                    <li>Easy to track with modern SaaS tools</li>
+                                </ul>
+                            </div>
+                            <div class="cons-col">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li>Usage doesn't equal value</li>
+                                    <li>Can be gamed by mandating tool usage</li>
+                                    <li>May plateau quickly</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 4 -->
+                <div class="metric-card">
+                    <div class="metric-number-col">
+                        <span class="metric-number">04</span>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-header">
+                            <h3 class="metric-name">Meeting Time Reduction</h3>
+                            <span class="narrative-badge badge-moderate">Narrative Fit: Moderate-Strong</span>
+                        </div>
+                        <p class="metric-definition">Average hours per employee spent in meetings, measured weekly. Also: percentage of collaboration that happens asynchronously.</p>
+                        <div class="pros-cons-grid">
+                            <div class="pros-col">
+                                <h4>Why It Works</h4>
+                                <ul>
+                                    <li>Meetings are a universal pain point</li>
+                                    <li>AI excels at summarization and async handoffs</li>
+                                    <li>Easy to measure via calendar analysis</li>
+                                </ul>
+                            </div>
+                            <div class="cons-col">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li>Not all meetings are bad</li>
+                                    <li>Could incentivize isolation</li>
+                                    <li>Doesn't measure what people do with reclaimed time</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 5 -->
+                <div class="metric-card">
+                    <div class="metric-number-col">
+                        <span class="metric-number">05</span>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-header">
+                            <h3 class="metric-name">Human OS Health Score</h3>
+                            <span class="narrative-badge badge-strong">Narrative Fit: Very Strong</span>
+                        </div>
+                        <p class="metric-definition">A proprietary composite score measuring organizational readiness across: process efficiency, tool adoption, workflow automation, employee capability, decision-making speed, and collaboration. Scored 0-100.</p>
+                        <div class="pros-cons-grid">
+                            <div class="pros-col">
+                                <h4>Why It Works</h4>
+                                <ul>
+                                    <li>Proprietary = differentiation for Andus</li>
+                                    <li>Holistic view captures multiple facets</li>
+                                    <li>Creates ongoing engagement</li>
+                                    <li>Avoids single-metric gaming</li>
+                                </ul>
+                            </div>
+                            <div class="cons-col">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li>Black box risk--clients may not trust what they don't understand</li>
+                                    <li>Potentially seen as self-serving</li>
+                                    <li>Requires significant methodology R&D</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 6 -->
+                <div class="metric-card">
+                    <div class="metric-number-col">
+                        <span class="metric-number">06</span>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-header">
+                            <h3 class="metric-name">Time to Value on AI Initiatives</h3>
+                            <span class="narrative-badge badge-strong">Narrative Fit: Strong</span>
+                        </div>
+                        <p class="metric-definition">Elapsed time from when an AI initiative is approved to when it delivers measurable business value. Measured in days or weeks.</p>
+                        <div class="pros-cons-grid">
+                            <div class="pros-col">
+                                <h4>Why It Works</h4>
+                                <ul>
+                                    <li>Captures execution speed--a core consulting value prop</li>
+                                    <li>Outcome-focused: requires actual value delivery</li>
+                                    <li>Speaks directly to executive concerns about ROI timelines</li>
+                                </ul>
+                            </div>
+                            <div class="cons-col">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li>"Value" must be defined per initiative</li>
+                                    <li>May incentivize small wins over transformational projects</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 7 - Highlighted -->
+                <div class="metric-card highlighted">
+                    <span class="highlight-label">Recommended</span>
+                    <div class="metric-number-col">
+                        <span class="metric-number">07</span>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-header">
+                            <h3 class="metric-name">Capacity Created (Hours Returned to Strategic Work)</h3>
+                            <span class="narrative-badge badge-excellent">Narrative Fit: Excellent</span>
+                        </div>
+                        <p class="metric-definition">The number of hours per employee per week freed from routine/administrative tasks and available for strategic, creative, or high-judgment work.</p>
+                        <div class="pros-cons-grid">
+                            <div class="pros-col">
+                                <h4>Why It Works</h4>
+                                <ul>
+                                    <li><strong>Reframes the narrative:</strong> Instead of "we eliminated work," it's "we created capacity"</li>
+                                    <li>Positive for employees--they do more interesting work</li>
+                                    <li>Avoids the headcount reduction concern</li>
+                                    <li>Concrete and relatable: "You got 5 hours back this week"</li>
+                                </ul>
+                            </div>
+                            <div class="cons-col">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li>Requires defining "routine" vs. "strategic" work</li>
+                                    <li>Self-reported data may be unreliable</li>
+                                    <li>Freed time might not actually go to strategic work</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recommendation-section">
+            <div class="recommendation-card">
+                <span class="recommendation-label">Our Recommendation</span>
+                <h3>Primary North Star: Capacity Created</h3>
+                <p class="metric-subtitle">(Hours Returned to Strategic Work)</p>
+
+                <p>This metric best resolves the tension Mike identified:</p>
+
+                <ol class="reasons-list">
+                    <li>
+                        <span class="reason-number">1</span>
+                        <span><strong>Sidesteps the human cost concern:</strong> Rather than celebrating fewer employees, it celebrates <em>better</em> work for the same employees. The narrative is about elevation, not elimination.</span>
+                    </li>
+                    <li>
+                        <span class="reason-number">2</span>
+                        <span><strong>Is measurable and concrete:</strong> "We freed up 8 hours per employee per week" is tangible.</span>
+                    </li>
+                    <li>
+                        <span class="reason-number">3</span>
+                        <span><strong>Aligns with Andus's positioning:</strong> "Recomposing the business operating system" is about redesigning how work gets done.</span>
+                    </li>
+                    <li>
+                        <span class="reason-number">4</span>
+                        <span><strong>Creates a positive employee narrative:</strong> "AI took away my tedious work" is a story people want to tell.</span>
+                    </li>
+                    <li>
+                        <span class="reason-number">5</span>
+                        <span><strong>Is defensible and differentiating:</strong> Requires Andus's methodology to measure--creating a moat.</span>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="metric-pairing">
+                <div class="pairing-card">
+                    <span class="pairing-label">Primary Metric</span>
+                    <h4>Capacity Created</h4>
+                    <p>We freed your people from routine work</p>
+                </div>
+                <div class="pairing-card">
+                    <span class="pairing-label">Secondary Metric</span>
+                    <h4>Decision Velocity</h4>
+                    <p>And now they can act faster</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="implementation-section">
+            <h2 class="section-title">Implementation Notes</h2>
+            <p class="implementation-intro">To operationalize "Capacity Created":</p>
+
+            <div class="implementation-grid">
+                <div class="implementation-item">
+                    <div class="step-number">1</div>
+                    <div class="implementation-content">
+                        <h4>Develop a work categorization framework</h4>
+                        <p>Define what constitutes routine/administrative vs. strategic work. Make it simple (3-4 categories max).</p>
+                    </div>
+                </div>
+                <div class="implementation-item">
+                    <div class="step-number">2</div>
+                    <div class="implementation-content">
+                        <h4>Create a lightweight measurement approach</h4>
+                        <p>Combine workflow tool data with periodic employee surveys (monthly pulse, quarterly deep-dive).</p>
+                    </div>
+                </div>
+                <div class="implementation-item">
+                    <div class="step-number">3</div>
+                    <div class="implementation-content">
+                        <h4>Establish baselines early</h4>
+                        <p>Measure before any intervention. The delta is the story.</p>
+                    </div>
+                </div>
+                <div class="implementation-item">
+                    <div class="step-number">4</div>
+                    <div class="implementation-content">
+                        <h4>Translate to business impact</h4>
+                        <p>Always be ready to convert hours to dollars for CFO conversations, but lead with the human story.</p>
+                    </div>
+                </div>
+                <div class="implementation-item">
+                    <div class="step-number">5</div>
+                    <div class="implementation-content">
+                        <h4>Build the benchmark database</h4>
+                        <p>Over time, Andus can say "best-in-class companies free up 10+ hours per employee per week."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Analysis prepared for Andus strategy development | April 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

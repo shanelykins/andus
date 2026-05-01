@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andus Design Versions - Compare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0A0A0A;
+            color: #FAFAFA;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #737373;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .versions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .version-card {
+            background: #141414;
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid #262626;
+        }
+
+        .version-card:hover {
+            transform: translateY(-8px);
+            border-color: #404040;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
+        }
+
+        .preview {
+            height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview iframe {
+            width: 200%;
+            height: 200%;
+            transform: scale(0.5);
+            transform-origin: top left;
+            pointer-events: none;
+            border: none;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 60%, #141414);
+        }
+
+        .version-info {
+            padding: 32px;
+        }
+
+        .version-num {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #525252;
+            margin-bottom: 12px;
+        }
+
+        .version-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .version-desc {
+            font-size: 14px;
+            color: #737373;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .version-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 6px 12px;
+            background: #1F1F1F;
+            border-radius: 100px;
+            color: #A3A3A3;
+        }
+
+        /* Color indicators */
+        .v1 .version-name { color: #818CF8; }
+        .v1 .tag { background: rgba(129, 140, 248, 0.1); color: #818CF8; }
+
+        .v2 .version-name { color: #C4704B; }
+        .v2 .tag { background: rgba(196, 112, 75, 0.1); color: #C4704B; }
+
+        .v3 .version-name { color: #FF4D00; }
+        .v3 .tag { background: rgba(255, 77, 0, 0.1); color: #FF4D00; }
+
+        .v4 .version-name { color: #5B8A72; }
+        .v4 .tag { background: rgba(91, 138, 114, 0.1); color: #5B8A72; }
+
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 12px 24px;
+            background: #262626;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #FAFAFA;
+            transition: background 0.2s ease;
+        }
+
+        .version-card:hover .view-btn {
+            background: #333333;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #262626;
+            color: #525252;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .versions {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Design Versions</h1>
+            <p class="subtitle">Click any version to view it full-screen. Each follows a distinct aesthetic direction.</p>
+        </header>
+
+        <div class="versions">
+            <a href="v1-tech-indigo.html" class="version-card v1">
+                <div class="preview">
+                    <iframe src="v1-tech-indigo.html" loading="lazy"></iframe>
+                    <div class="preview-overlay"></div>
+                </div>
+                <div class="version-info">
+                    <div class="version-num">Version 01</div>
+                    <h2 class="version-name">Tech Indigo</h2>
+                    <p class="version-desc">Modern SaaS aesthetic with indigo/purple gradients, asymmetric layout, ambient glows, and premium card-based UI.</p>
+                    <div class="version-tags">
+                        <span class="tag">Plus Jakarta Sans</span>
+                        <span class="tag">Gradient Accent</span>
+                        <span class="tag">Ambient Glow</span>
+                    </div>
+                    <div class="view-btn">View Full &rarr;</div>
+                </div>
+            </a>
+
+            <a href="v2-warm-minimal.html" class="version-card v2">
+                <div class="preview">
+                    <iframe src="v2-warm-minimal.html" loading="lazy"></iframe>
+                    <div class="preview-overlay"></div>
+                </div>
+                <div class="version-info">
+                    <div class="version-num">Version 02</div>
+                    <h2 class="version-name">Warm Minimal</h2>
+                    <p class="version-desc">Soft, approachable design with warm cream background, terracotta accent, Fraunces serif, and clean stacked card layout.</p>
+                    <div class="version-tags">
+                        <span class="tag">Fraunces + Inter</span>
+                        <span class="tag">Terracotta</span>
+                        <span class="tag">Soft Warmth</span>
+                    </div>
+                    <div class="view-btn">View Full &rarr;</div>
+                </div>
+            </a>
+
+            <a href="v3-bold-geometric.html" class="version-card v3">
+                <div class="preview">
+                    <iframe src="v3-bold-geometric.html" loading="lazy"></iframe>
+                    <div class="preview-overlay"></div>
+                </div>
+                <div class="version-info">
+                    <div class="version-num">Version 03</div>
+                    <h2 class="version-name">Bold Geometric</h2>
+                    <p class="version-desc">High-contrast design with Space Grotesk, orange accent, strong black/white contrast, horizontal card strips, and bold typography.</p>
+                    <div class="version-tags">
+                        <span class="tag">Space Grotesk</span>
+                        <span class="tag">High Contrast</span>
+                        <span class="tag">Orange Accent</span>
+                    </div>
+                    <div class="view-btn">View Full &rarr;</div>
+                </div>
+            </a>
+
+            <a href="v4-editorial-slate.html" class="version-card v4">
+                <div class="preview">
+                    <iframe src="v4-editorial-slate.html" loading="lazy"></iframe>
+                    <div class="preview-overlay"></div>
+                </div>
+                <div class="version-info">
+                    <div class="version-num">Version 04</div>
+                    <h2 class="version-name">Editorial Slate</h2>
+                    <p class="version-desc">Magazine-inspired layout with Newsreader serif, muted sage green accent, centered typography, and sophisticated editorial feel.</p>
+                    <div class="version-tags">
+                        <span class="tag">Newsreader + IBM Plex</span>
+                        <span class="tag">Sage Green</span>
+                        <span class="tag">Editorial</span>
+                    </div>
+                    <div class="view-btn">View Full &rarr;</div>
+                </div>
+            </a>
+        </div>
+
+        <footer>
+            Pick your favorite and I'll apply that design system across all deliverables
+        </footer>
+    </div>
+</body>
+</html>
