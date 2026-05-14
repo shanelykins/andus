@@ -1,0 +1,7 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/slides/*"
+  to = "/slides/index.html"
+  status = 200
